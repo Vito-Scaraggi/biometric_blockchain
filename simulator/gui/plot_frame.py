@@ -6,6 +6,7 @@ from matplotlib.backends.backend_tkagg import (
     NavigationToolbar2Tk
 )
 from numpy import zeros, arange
+from math import floor
 
 class plot_frame(Frame):
 
@@ -21,7 +22,7 @@ class plot_frame(Frame):
 
         self.matrixes = [ [stats.count_block], [stats.avg_cr_time], [stats.avg_tx_time], [stats.avg_tx_p_time, stats.avg_tx_c_time],
                           [stats.avg_p_c_ratio], [stats.avg_cpow_time], [stats.avg_tx_attempts], [stats.avg_cpow_attempts] ]
-    
+
         self.colors = [ 
                     [  [["cornflowerblue"], ], [  ["mediumseagreen", "indianred"],]],
                     [  [["cornflowerblue"], ["orange"],], [["mediumseagreen", "indianred"], ["springgreen", "mistyrose"],]],
@@ -49,7 +50,7 @@ class plot_frame(Frame):
         self.combo_1['state'] = "readonly"
 
         self.combo_2 = ttk.Combobox(master = frame, width=15)
-        self.combo_2['values'] = [ "fair/evil", "transactions", "both"]
+        self.combo_2['values'] = [ "total", "fair/evil", "transactions", "combined"]
         self.combo_2['state'] = "readonly"
         
         button = Button(master = frame, text = "Plot", command = self.histo)
@@ -74,22 +75,27 @@ class plot_frame(Frame):
         if index > -1 and mode > -1:
             m = self.matrixes[index]
             dim_1 = len(m) #floor  
-            dim_2 = m[0].shape[0] - 1 if mode == 2 else 1 #subcat
-            dim_3 = m[0].shape[min(mode,1)] - 1 #subcat len
+            dim_2 = 2 if mode == 3 else 1 #subcat
+            dim_3 = 1 if mode == 0 else m[0].shape[ floor(mode/2) ] - 1 #subcat len
 
-            arr = zeros([dim_1, dim_2, dim_3])        
-
+            arr = zeros([dim_1, dim_2, dim_3])
+            
             if mode == 0:
+                labels = ["total"]
+                for i, m in enumerate(m):
+                    arr[i, 0, 0] = m[0, 0]
+
+            if mode == 1:
                 labels = ["fair", "evil"]
                 for i, m in enumerate(m):
                     arr[i, 0, :] = m[1:, 0]
             
-            if mode == 1:
+            if mode == 2:
                 labels = ["{} tx".format(i) for i in range(1, dim_3 + 1) ]
                 for i, m in enumerate(m):
                     arr[i, 0, :] = m[0, 1:]
 
-            if mode == 2:
+            if mode == 3:
                 labels = ["{} tx".format(i) for i in range(1, dim_3 + 1) ]
                 for i, m in enumerate(m):
                     arr[i, :, :] = m[1:, 1:]
@@ -102,7 +108,6 @@ class plot_frame(Frame):
             canvas = FigureCanvasTkAgg(fig, self.plot_frame)
             toolbar = NavigationToolbar2Tk( canvas, self.plot_frame)
             plot = fig.add_subplot()
-            
             prec = zeros([dim_2, dim_3])
             
             for i in range(dim_1):
@@ -110,7 +115,7 @@ class plot_frame(Frame):
                     data = arr[i][j]
                     X = arange(dim_3)
                     plot.bar(X + j/4, data, bottom = prec[j], color= self.colors[dim_1-1][dim_2-1][i][j], 
-                                    label = self.legends[dim_1-1][dim_2-1][i][j], width = 0.25)
+                                    label = self.legends[dim_1-1][dim_2-1][i][j], width = 0.25, align = "center")
                     plot.set_xticks(X+j/4, minor=False)
                     plot.set_xticklabels(labels, fontdict=None, minor=False)
                     

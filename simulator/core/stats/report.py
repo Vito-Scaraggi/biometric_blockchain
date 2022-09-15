@@ -33,8 +33,7 @@ class report:
         '''Returns info string containing simulation settings'''
 
         info = "" 
-        info += "Elapsed time: {}\n".format( self.stats.sim_time )
-        info += "Average block creation time: {}\n\n".format(self.stats.avg_bc_time)
+        info += "Elapsed time: {}\n\n".format( self.stats.sim_time )
         
         sections = ["general", "PRNG", self.settings["general"]["type"]]
 

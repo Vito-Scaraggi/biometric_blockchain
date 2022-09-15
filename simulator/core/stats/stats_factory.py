@@ -1,4 +1,3 @@
-from statistics import mean
 from typing import Callable
 from numpy import zeros, ndarray, vectorize
 from datetime import timedelta
@@ -51,6 +50,7 @@ class stats_factory:
         for b in range(1, 3):
             matrix[b , 0] = sum(matrix[b, :])
 
+        matrix[0, 0] = sum(matrix[ : , 0])
         return matrix
 
     def custom_divide(mat1 : ndarray, mat2 : ndarray, digs : int) -> ndarray:
@@ -82,16 +82,14 @@ class stats_factory:
 
         g_stats = global_stats()
         g_stats.sim_time = timedelta( seconds = sim_time)
-        g_stats.avg_bc_time = timedelta (seconds = mean( [sum(bs.tx_times) + bs.cpow_time for bs in self.block_stats] ) )
-
-        count_block = self.matrix( lambda x : 1, max_tx)
+        
+        count_block = self.matrix( lambda x: 1, max_tx)
         tx_time = self.matrix( lambda x: sum(x), max_tx, "tx_times")
         tx_p_time = self.matrix( lambda x: sum(x), max_tx, "prng_times")
         tx_c_time = self.matrix( lambda x: sum(x), max_tx, "crypto_times")
         tx_attempts = self.matrix( lambda x: sum(x), max_tx, "tx_attempts")
         cpow_time = self.matrix( lambda x: x, max_tx, "cpow_time")
         cpow_attempts = self.matrix( lambda x: x, max_tx, "cpow_attempts")
-        
         
         g_stats.count_block = count_block
         g_stats.avg_tx_time = stats_factory.custom_divide(tx_time, count_block, 3)
@@ -104,5 +102,5 @@ class stats_factory:
         avg_cr_time = g_stats.avg_tx_time + g_stats.avg_cpow_time
         round3 = vectorize(lambda x : round(x, 3))
         g_stats.avg_cr_time = round3(avg_cr_time)
-
+        
         return g_stats

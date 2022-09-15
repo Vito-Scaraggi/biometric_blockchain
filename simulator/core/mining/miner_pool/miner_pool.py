@@ -38,8 +38,8 @@ class miner_pool():
         cls = self.get_miner_cls()
         sbuffer = sync_buffer()
         
-        evil = [ cls( _, True, sbuffer) for _ in range(self.evil_miner)]
-        fair = [ cls( _, False, sbuffer) for _ in range(self.n_miner - self.evil_miner)]
+        evil = [ cls( i, True, sbuffer) for i in range(self.evil_miner)]
+        fair = [ cls( i, False, sbuffer) for i in range(self.n_miner - self.evil_miner)]
         
         miners = fair + evil
         shuffle(miners)

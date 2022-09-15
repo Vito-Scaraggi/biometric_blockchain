@@ -14,7 +14,7 @@ class slider_frame(Frame):
         self.grid_configure()
         self.counter = 0
         self.bottom_menu(num_row)
-        self.show(0)
+        self.show()
 
     def grid_configure(self):
         self.columnconfigure(0, weight=10)
@@ -25,24 +25,24 @@ class slider_frame(Frame):
         value = self.spinbox.get()
         if value.isdigit():
             cur = int(value)
-            if 0 <= cur < self.num_item:
-                self.counter = cur
-                self.show(cur)
+            if 1 <= cur <= self.num_item:
+                self.counter = cur - 1
+                self.show()
 
     def next(self):
         next = min(self.counter+1, self.num_item-1)
-        self.spinbox.set(next)
+        self.spinbox.set(next+1)
         self.counter = next
-        self.show(next)
+        self.show()
 
     def prev(self):
         prev = max(0, self.counter - 1)
-        self.spinbox.set(prev)
+        self.spinbox.set(prev+1)
         self.counter = prev
-        self.show(prev)
+        self.show()
 
-    def show(self, index):
-        info = str(self.iterable[index])
+    def show(self):
+        info = str(self.iterable[self.counter])
         t  = Text(master = self)
         t.insert(1.0, info)
         t.configure(state = "disabled")
@@ -52,9 +52,9 @@ class slider_frame(Frame):
         frame = Frame(master = self)
         frame.grid(row = num_row, column = 0, columnspan=2)
         goto = Button(master = frame, text = "Go to", command = self.goto)
-        self.spinbox = ttk.Spinbox(master = frame, from_=0, to=self.num_item-1, width=10)
-        self.spinbox.set(0)
-        total = Label(master = frame, text = "out of {}".format(self.num_item-1))
+        self.spinbox = ttk.Spinbox(master = frame, from_=1, to=self.num_item, width=10)
+        self.spinbox.set(1)
+        total = Label(master = frame, text = "out of {}".format(self.num_item))
         prev = Button(master = frame, text = "prev", command = self.prev)
         next = Button(master = frame, text = "next", command = self.next)
         goto.pack(padx=5, pady=5, side = LEFT)

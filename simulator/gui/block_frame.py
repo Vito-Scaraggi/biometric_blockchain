@@ -17,16 +17,16 @@ class block_frame(slider_frame):
         self.rowconfigure(1, weight=6)
         self.rowconfigure(2, weight=1)
 
-    def show(self, index : int) -> None:
+    def show(self) -> None:
 
-        info = self.iterable[index].get_info(index)
+        info = self.iterable[self.counter].get_info(self.counter+1)
         lb1 = LabelFrame(master = self, text = "Info")
         general  = Text(master = lb1, height=5, width = 40)
         general.insert(1.0, info)
         general.configure(state = "disabled")
         general.pack(fill=BOTH, expand=1)
 
-        logs = self.iterable[index].get_logs()
+        logs = self.iterable[self.counter].get_logs()
         lb2 = LabelFrame(master = self, text = "Logs")
         history  = Text(master = lb2, height=20, width = 40)
         history.insert(1.0, logs)
@@ -41,7 +41,7 @@ class block_frame(slider_frame):
         scrollbar_1.grid(row=0, column=1, sticky = NS)
         history['yscrollcommand'] = scrollbar_1.set
 
-        json = self.iterable[index].raw_block
+        json = self.iterable[self.counter].raw_block
         lb3 = LabelFrame(master = self, text = "JSON block")
         block  = Text(master = lb3, height=35, width = 80, font=("Helvetica", 9))
         block.insert(1.0, json)

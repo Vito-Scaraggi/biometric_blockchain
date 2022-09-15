@@ -2,12 +2,12 @@
     "general" : {
         "type" : "RSA",
         "distr" : "uniform",
-        "n_blocks" : 3,
+        "n_blocks" : 10,
         "n_miners" : 8,
         "n_evils" : 0,
         "n_users" : 10,
         "modulus_bit_length" : 256,
-        "w" : 1024,
+        "w" : 512,
         "max_tx" : 3,
         "base_diff" : 3
     },

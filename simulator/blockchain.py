@@ -1,3 +1,6 @@
+from math import ceil
+from random import randrange
+
 from core.stats.report import report
 from core.util.factory import factory
 from gui.gui import Gui
@@ -40,11 +43,21 @@ class blockchain:
         '''Simulates blockchain'''
 
         public_file = self.user_pool.get_public_file()
-
+        
+        r_blocks = [ ceil(self.n_blocks/self.max_tx) for _ in range(self.max_tx) ]
+        
         for block_number in range(1,self.n_blocks+1):
             print("Creating block {}/{}".format(block_number, self.n_blocks), end = " ... ")
             aux = self.retrieve_aux()
-            raw_txs = self.user_pool.sim_txs( (block_number % self.max_tx) + 1)
+            flag = False
+            
+            while(not flag):
+                n_tx = randrange(1, self.max_tx+1)
+                flag = r_blocks[n_tx-1]
+            
+            r_blocks[n_tx-1] -= 1            
+            
+            raw_txs = self.user_pool.sim_txs(n_tx)
             p = packet(block_number, aux, raw_txs, public_file)
             
             block, stats = self.miner_pool.start_mining(p)

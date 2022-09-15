@@ -8,7 +8,6 @@ class global_stats:
     '''Defines simulation statistics'''
 
     sim_time : timedelta = field(init=False)
-    avg_bc_time : timedelta = field(init=False)
     count_block : ndarray  = field(init=False)
     avg_tx_time : ndarray = field(init=False)
     avg_tx_p_time : ndarray = field(init=False)
