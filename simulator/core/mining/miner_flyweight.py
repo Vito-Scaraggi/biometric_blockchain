@@ -38,7 +38,7 @@ class miner_flyweight:
         if delta_num_tx == 0:
             difficulty = 0
         else:
-            ell = cls.base_diff + ceil(log2((4*cls.w+1)*delta_num_tx))
+            ell = cls.base_diff + round(log2((4*cls.w+1)*delta_num_tx))
             difficulty = ell
 
         b = block(aux, block_number, difficulty, nonce, seed_values, raw_txs)
