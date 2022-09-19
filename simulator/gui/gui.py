@@ -1,4 +1,5 @@
 from tkinter import BOTH, TOP, ttk, Tk, Text, Frame
+from turtle import width
 
 from core.stats.report import report
 from gui.plot_frame import plot_frame
@@ -11,7 +12,14 @@ class Gui(Tk):
 
     def __init__(self, report : report):
         super(Gui, self).__init__()
-        self.geometry("960x576")
+        width = 960
+        height =  576
+        screen_width = self.winfo_screenwidth()  # Width of the screen
+        screen_height = self.winfo_screenheight() # Height of the screen
+        # Calculate Starting X and Y coordinates for Window
+        x = (screen_width/2) - (width/2)
+        y = (screen_height/2) - (height/2)
+        self.geometry('%dx%d+%d+%d' % (width, height, x, y))
         self.resizable(0,0)
         self.title("Blockchain Simulator ver. 1.0")
         self.report = report
