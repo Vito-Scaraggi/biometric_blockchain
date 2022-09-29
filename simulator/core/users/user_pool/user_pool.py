@@ -22,7 +22,7 @@ class user_pool():
     def get_user_cls(*args, **kwargs):
         '''Returns correct user class'''
         pass
-    
+     
     def __init__(self, settings : dict) -> None:
         
         '''Creates a pool of users'''

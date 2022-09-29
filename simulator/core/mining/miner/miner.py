@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from multiprocessing import Process
+from random import seed
 
 from core.stats.block_stats import block_stats
 from core.datastruct.public_key import public_key
@@ -50,7 +51,7 @@ class miner(Process):
     def run(self) -> None:
 
         '''Executes miner's task'''
-        
+        seed(self.id)
         packet = self.sbuffer.get_packet()
         bs = block_stats(packet.raw_txs)
         seed_values = []
@@ -109,7 +110,7 @@ class miner(Process):
             
             while flag_cleared == 0:
                 n_attempts += 1;
-                prng_time, flag_cleared, test_seed = self.evil_clear_attempt(message, aux, clearing, public_key);
+                prng_time, flag_cleared, test_seed = self.evil_clear_attempt(message, aux, clearing);
                 eta_prng += prng_time
         else:
             signature = packet.raw_txs[tx_id].signature
@@ -122,8 +123,8 @@ class miner(Process):
         
         return eta_prng, eta_crypto, n_attempts, test_seed
     
-    def evil_clear_attempt(self, message : str, aux: str, clearing : int, public_key : public_key) -> tuple:
+    def evil_clear_attempt(self, message : str, aux: str, clearing : int) -> tuple:
         '''Makes an evil clearing attempt'''
-        eta_prng, test_seed, test_delta_e = self.prng_phase(message, aux, public_key)
+        eta_prng, test_seed, test_delta_e = self.prng_phase(message, aux)
         ok = mf.auth(test_delta_e, clearing, test_delta_e)
         return eta_prng, ok, test_seed;

@@ -55,13 +55,13 @@ class ECDSA_miner(miner):
             Then it checks if cleared public key appears in public file.
         '''
         
-        eta_prng, test_seed, test_delta_e = self.prng_phase(message, aux, public_key, PoW)
+        eta_prng, test_seed, test_delta_e = self.prng_phase(message, aux, PoW)
         eta_crypto, test_pk = self.crypto_phase(test_delta_e, ver_pk)
         ok = mf.ident(test_pk.x, public_file, test_delta_e)
         return eta_prng, eta_crypto, ok, test_seed;
 
     @tools.crono
-    def prng_phase(self, m : str, aux : str, public_key : public_key, PoW : str = None) -> tuple:
+    def prng_phase(self, m : str, aux : str, PoW : str = None) -> tuple:
 
         '''Executes PRNG phase as described in ECDSA blockchain protocol.'''
 

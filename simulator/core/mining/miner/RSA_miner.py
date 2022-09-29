@@ -35,26 +35,26 @@ class RSA_miner(miner):
         
         '''Makes a fair clearing attempt'''
 
-        eta_prng, test_seed, test_delta_e = self.prng_phase(message, aux, public_key, PoW)
+        eta_prng, test_seed, test_delta_e = self.prng_phase(message, aux, PoW)
         ver_s , hash_m = ver[0], ver[1]
         eta_crypto, test_m = self.crypto_phase(test_delta_e, ver_s, hash_m, public_key)
         ok = mf.auth(test_m, hash_m, test_delta_e)
         return eta_prng, eta_crypto, ok, test_seed;
 
     @tools.crono
-    def prng_phase(self, m : str, aux : str, public_key : public_key, PoW : str = None) -> tuple:
+    def prng_phase(self, m : str, aux : str, PoW : str = None) -> tuple:
         
         '''Executes PRNG phase as described in RSA blockchain protocol.'''
 
-        n = public_key.param.get("n")
-        test_seed = hex(randrange(2**mf.mbl)) if PoW is None else PoW;
-        prng_input = m + test_seed + aux;
+        #n = public_key.param.get("n")
+        test_seed = hex(randrange(2**mf.mbl)) if PoW is None else PoW
+        prng_input = m + test_seed + aux
         digest_val = tools.hashint(prng_input, mf.mbl)
         digest_val_binary = format(digest_val, "0" + str(mf.mbl) + "b")
 
         for _ in range(mf.prng_X):
-            seed = int(digest_val_binary, 2) % n;
-            y = (mf.prng_b * pow(mf.prng_a, seed, n)) % n
+            seed = int(digest_val_binary, 2) % mf.prng_n
+            y = (mf.prng_b * pow(mf.prng_a, seed, mf.prng_n)) % mf.prng_n
             digest_val = tools.hashint( hex(y), mf.mbl)
             digest_val_binary = format(digest_val, "0" + str(mf.mbl) + "b")
 

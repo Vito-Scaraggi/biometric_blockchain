@@ -81,6 +81,7 @@ class miner_pool():
         #prng
         mf.prng_a = settings["PRNG"]["a"]
         mf.prng_b = settings["PRNG"]["b"]
+        mf.prng_n = settings["PRNG"]["n"]
         mf.prng_X = settings["PRNG"]["X"]
     
     def accept_block(self, miners : list[miner], block : block, public_file : list[public_key]) -> bool:

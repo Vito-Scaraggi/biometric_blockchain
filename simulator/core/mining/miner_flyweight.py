@@ -3,6 +3,7 @@ from math import log2, ceil
 
 from core.datastruct.packet import packet
 from core.datastruct.block import block
+from core.datastruct.public_key import public_key
 from core.util.tools import tools
 
 class miner_flyweight:
@@ -75,11 +76,30 @@ class miner_flyweight:
         return test == target and -2*cls.w <= delta <= 2*cls.w
     
     @classmethod
-    def ident(cls, test : int, public_file : list[int], delta : int) -> bool:
+    def ident(cls, test : int, public_file : list[public_key], delta : int) -> bool:
         '''
         Makes an identification attempt.
-        Checks if test value is in target list and clearing value is valid.
+        Checks if test value is in target list throught a binary search.
+        And checks if clearing value is valid.
         '''
-        target_list = [ p.param.get("pk") for p in public_file]
-        ok = test in target_list and -2*cls.w <= delta <= 2*cls.w
+        ok = cls.binary_search(test, public_file) and -2*cls.w <= delta <= 2*cls.w #binary search
         return ok
+
+    @staticmethod
+    def binary_search(test : int, public_file : list[public_key]):
+        
+        l = 0
+        r = len(public_file) - 1
+        
+        while r - l > 1:
+            m = (r + l) // 2
+            found = public_file[m].param.get("pk")
+            if  found < test:
+                l = m + 1
+            else:
+                r = m
+
+        found_1 = public_file[l].param.get("pk")
+        found_2 = public_file[r].param.get("pk")
+        
+        return test == found_1 or test == found_2

@@ -109,6 +109,7 @@ class plot_frame(Frame):
             toolbar = NavigationToolbar2Tk( canvas, self.plot_frame)
             plot = fig.add_subplot()
             prec = zeros([dim_2, dim_3])
+            plot.set_xlim(-1, dim_3)
             
             for i in range(dim_1):
                 for j in range(dim_2):

@@ -19,8 +19,9 @@ def custom_validate(settings : dict):
         
         mbl = settings["general"]["modulus_bit_length"]
         type = settings["general"]["type"]
-        tmp_1 = [ settings["PRNG"]["a"],  settings["PRNG"]["b"]]
+        tmp_1 = [ settings["PRNG"]["a"],  settings["PRNG"]["b"], settings["PRNG"]["n"]]
         flag_1 = all([ x < 2**mbl for x in tmp_1])
+        
         if flag_1:    
             
             flag_2 = True

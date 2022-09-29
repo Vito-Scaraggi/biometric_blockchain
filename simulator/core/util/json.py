@@ -25,6 +25,7 @@ json_schema = {
                 "properties" : {
                     "a" : { "type" : "integer", "minimum" : 0},
                     "b" : { "type" : "integer", "minimum" : 0 },
+                    "n" : { "type" : "integer", "minimum" : 0 },
                     "X" : { "type" : "integer", "minimum" : 0,  "minimum" : 0, "maximum" : 100},
                 }
             },
@@ -66,6 +67,7 @@ json_alias = {
             "PRNG" : {
                 "a" : "PRNG a parameter",
                 "b" : "PRNG b parameter",
+                "n" : "PRNG n parameter",
                 "X" : "PRNG X parameter",
             },
             "ECDSA" : {

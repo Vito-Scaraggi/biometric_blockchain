@@ -25,21 +25,30 @@ class RSA_user(user):
     def keygen(self) -> None:
         '''Generates couple of keys for RSA user'''
 
-        (pk, sk) = rsa.newkeys(256)
+        (pk, sk) = rsa.newkeys(uf.mbl)
         self.fixed_sk = sk.d
         phi = (sk.p - 1) * (sk.q - 1)
-        flag = 0
-
-        while not flag:
-            #other approach: test x+-1, x+-2, ...
-            enrolled_sk = uf.fuzzy_distribution(self.fixed_sk, uf.w, pk.n)
-            flag = gcd(enrolled_sk, phi) == 1
         
-        self.enrolled_sk = enrolled_sk
+        enrolled_sk = uf.fuzzy_distribution(self.fixed_sk, uf.w, pk.n)
+        
+        flag1 = 0
+        flag2 = 0
+        cont = 0
+
+        while not (flag1 or flag2):
+            cont += 1
+            flag1 = gcd( (enrolled_sk - cont) % pk.n, phi) == 1     
+            flag2 = gcd( (enrolled_sk + cont) % pk.n, phi) == 1
+
+        if flag1:
+            self.enrolled_sk = (enrolled_sk - cont)% pk.n
+        else:
+            self.enrolled_sk = (enrolled_sk + cont) % pk.n
+        
         self.enrolled_noise = self.enrolled_sk - self.fixed_sk
         
         n = pk.n
-        e = pow(enrolled_sk, -1, phi)
+        e = pow(self.enrolled_sk, -1, phi)
         self.public_key = public_key(self.username, { "n" : n, "e" : e} )
 
     def fuzzy_sign(self, message : str) -> tuple:

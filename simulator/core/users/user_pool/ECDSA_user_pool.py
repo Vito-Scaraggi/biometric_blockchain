@@ -13,6 +13,7 @@ class ECDSA_user_pool(user_pool):
         '''Creates a ECDSA user pool'''
         super(ECDSA_user_pool, self).__init__(settings)
         self.configure_flyweight(settings)
+        self.users.sort(key = self.sort_key)
     
     def configure_flyweight(self, settings : dict) -> None:
         '''Configure user flywight in a proper way for ECDSA protocol'''
@@ -27,3 +28,7 @@ class ECDSA_user_pool(user_pool):
     def get_user_cls(self):
         '''Returns ECDSA user class'''
         return ECDSA_user
+    
+    def sort_key(self, user):
+        '''Return user sorting parameter'''
+        return user.public_key.param.get("pk")
