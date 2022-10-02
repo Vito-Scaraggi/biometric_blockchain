@@ -8,25 +8,25 @@ json_schema = {
                 "properties" : {
                     "type" : { "enum" : ['RSA', 'ECDSA'] },
                     "distr" : { "enum" : ['uniform', 'binom'] },
-                    "n_blocks" : { "type" : "integer",  "minimum" : 0, "maximum" : 500},
-                    "n_miners" : { "type" : "integer",  "minimum" : 0, "maximum" : 16},
-                    "n_evils" : { "type" : "integer",  "minimum" : 0, "maximum" : 16},
-                    "n_users" : { "type" : "integer",  "minimum" : 0, "maximum" : 100},
-                    "modulus_bit_length" : { "enum" : [256, 512] },
-                    "w" : { "type" : "integer",  "minimum" : 0, "maximum" : 1024},
-                    "max_tx" : { "type" : "integer",  "minimum" : 0, "maximum" : 10},
-                    "base_diff" : { "type" : "integer",  "minimum" : 0, "maximum" : 20},
+                    "n_blocks" : { "type" : "integer",  "minimum" : 1, "maximum" : 10000},
+                    "n_miners" : { "type" : "integer",  "minimum" : 1, "maximum" : 16},
+                    "n_evils" : { "type" : "integer",  "minimum" : 1, "maximum" : 16},
+                    "n_users" : { "type" : "integer",  "minimum" : 1, "maximum" : 10000},
+                    "modulus_bit_length" : { "enum" : [256, 512, 1024, 2048] },
+                    "w" : { "type" : "integer",  "minimum" : 1, "maximum" : 10000},
+                    "max_tx" : { "type" : "integer",  "minimum" : 1, "maximum" : 10},
+                    "base_diff" : { "type" : "integer",  "minimum" : 1, "maximum" : 10},
                 }
             },
             "PRNG" : {
                 "type" : "object",
                 "additionalProperties": False,
-                "minProperties": 3,
+                "minProperties": 4,
                 "properties" : {
-                    "a" : { "type" : "integer", "minimum" : 0},
-                    "b" : { "type" : "integer", "minimum" : 0 },
-                    "n" : { "type" : "integer", "minimum" : 0 },
-                    "X" : { "type" : "integer", "minimum" : 0,  "minimum" : 0, "maximum" : 100},
+                    "a" : { "type" : "integer", "minimum" : 1},
+                    "b" : { "type" : "integer", "minimum" : 1 },
+                    "n" : { "type" : "integer", "minimum" : 1 },
+                    "X" : { "type" : "integer", "minimum" : 1, "maximum" : 100},
                 }
             },
             "ECDSA" : {
@@ -36,8 +36,8 @@ json_schema = {
                         "properties" : {
                             "Gx" : {"type" : "integer", "minimum" : 0 },
                             "Gy" : {"type" : "integer", "minimum" : 0 },
-                            "n" : {"type" : "integer", "minimum" : 0 },
-                            "q" : {"type" : "integer", "minimum" : 0 }
+                            "n" : {"type" : "integer", "minimum" : 1 },
+                            "q" : {"type" : "integer", "minimum" : 1 }
                         }
             },
 

@@ -2,13 +2,13 @@
     "general" : {
         "type" : "RSA",
         "distr" : "uniform",
-        "n_blocks" : 3,
-        "n_miners" : 4,
+        "n_blocks" : 1,
+        "n_miners" : 2,
         "n_evils" : 0,
         "n_users" : 10,
         "modulus_bit_length" : 256,
-        "w" : 512,
-        "max_tx" : 3,
+        "w" : 20,
+        "max_tx" : 1,
         "base_diff" : 3
     },
     "PRNG" : {
