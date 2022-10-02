@@ -10,7 +10,7 @@ json_schema = {
                     "distr" : { "enum" : ['uniform', 'binom'] },
                     "n_blocks" : { "type" : "integer",  "minimum" : 1, "maximum" : 10000},
                     "n_miners" : { "type" : "integer",  "minimum" : 1, "maximum" : 16},
-                    "n_evils" : { "type" : "integer",  "minimum" : 1, "maximum" : 16},
+                    "n_evils" : { "type" : "integer",  "minimum" : 0, "maximum" : 16},
                     "n_users" : { "type" : "integer",  "minimum" : 1, "maximum" : 10000},
                     "modulus_bit_length" : { "enum" : [256, 512, 1024, 2048] },
                     "w" : { "type" : "integer",  "minimum" : 1, "maximum" : 10000},
