@@ -1,2 +1,3 @@
 # biometric_blockchain
-Biometric blockchain - work in progress
+Biometric blockchain simulator ver 1.0
+Implementation of RSA and ECDSA-based blockchain protocol using fuzzy signatures.
